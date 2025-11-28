@@ -1,0 +1,5 @@
+{
+  "name": "Tally Report Management",
+  "description": "A tally report interface for container inventory and management, allowing for data entry of container numbers, seals, and status.",
+  "requestFramePermissions": []
+}
