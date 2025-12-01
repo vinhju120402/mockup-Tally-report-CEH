@@ -290,17 +290,14 @@ const BargeTable: React.FC = () => {
   const [filterDirection, setFilterDirection] = useState('');
   const [filterOrderNo, setFilterOrderNo] = useState('');
 
-  // Conditional Logic for showing Order Number: Only show if Vessel is selected AND Method is 'Giao hàng'
-  const showOrderNoFilter = filterVessel !== '' && filterMethod === 'Giao hàng';
-
   // Check if all filters are selected
-  // If showOrderNoFilter is true, we also check filterOrderNo
+  // Order No is now always required
   const areAllFiltersSelected = 
     filterVessel !== '' && 
     filterBarge !== '' && 
     filterMethod !== '' && 
     filterDirection !== '' && 
-    (!showOrderNoFilter || filterOrderNo !== '');
+    filterOrderNo !== '';
 
   // Derived state for visible reports based on method
   const visibleReports = useMemo(() => {
@@ -338,13 +335,6 @@ const BargeTable: React.FC = () => {
       setSelectedReport(visibleReports[0].id);
     }
   }, [visibleReports, selectedReport]);
-
-  // Reset Order No if condition fails
-  useEffect(() => {
-    if (!showOrderNoFilter) {
-      setFilterOrderNo('');
-    }
-  }, [showOrderNoFilter]);
 
   // Effect to switch mock data based on report type
   useEffect(() => {
@@ -520,7 +510,7 @@ const BargeTable: React.FC = () => {
       <div className="p-4 space-y-4">
         
         {/* New Filters Section */}
-        <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 pb-4 border-b border-gray-100 ${showOrderNoFilter ? 'lg:grid-cols-5' : 'lg:grid-cols-4'}`}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4 border-b border-gray-100 lg:grid-cols-5">
            {/* Filter 1: Vessel */}
            <div className="flex flex-col gap-1">
               <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Tàu/chuyến</label>
@@ -569,8 +559,7 @@ const BargeTable: React.FC = () => {
               </div>
            </div>
 
-           {/* Filter Conditional: Order No - Only visible when Vessel selected AND Method is 'Giao hàng' */}
-           {showOrderNoFilter && (
+           {/* Filter 4: Order No - Always Visible */}
             <div className="flex flex-col gap-1">
                 <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Số lệnh</label>
                 <div className="relative">
@@ -585,9 +574,8 @@ const BargeTable: React.FC = () => {
                   <Filter className="w-3 h-3 text-gray-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>
             </div>
-           )}
 
-           {/* Filter 4: Direction */}
+           {/* Filter 5: Direction */}
            <div className="flex flex-col gap-1">
               <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Hàng Nhập/Xuất</label>
               <div className="relative">
